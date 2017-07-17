@@ -7,6 +7,19 @@
 
     <!--TODO 4.0+版本中access必须为hasRole('ROLE_**')-->
     <security:http auto-config="true">
+        <!--
+            当指定 auto-config=true 时，等价于配置
+                <security:http>
+                    <security:form-login/>
+                    <security:http-basic/>
+                    <security:logout/>
+                </security:http>
+                官方解释：
+                    A legacy attribute which automatically registers a login form, BASIC authentication and a
+                    logout URL and logout services. If unspecified, defaults to "false". We'd recommend you
+                    avoid using this and instead explicitly configure the services you require.
+                cxy 不建议使用此配置
+        -->
         <security:intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
     </security:http>
 
