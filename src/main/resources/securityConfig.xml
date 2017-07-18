@@ -5,10 +5,16 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
-    <!--login.jsp放行，实现匿名访问方式二：TODO 表示对应 pattern 的 filter 为 none -->
+
     <security:http pattern="/login.jsp" security="none"/>
 
     <security:http auto-config="true">
+
+        <security:remember-me key="cxy" user-service-ref="cachingUserDetailsService"/>
+
+        <!--匿名认证-->
+        <security:anonymous enabled="true" username="anonymousUser" key="doseNotMatter" granted-authority="IS_AUTHENTICATED_ANONYMOUSLY"/>
+
         <!--
             当指定 auto-config=true 时，等价于配置
                 <security:http>
@@ -23,13 +29,18 @@
                 cxy 不建议使用此配置
         -->
 
+        <!--
+            authentication-success-handler-ref 与 default-target-url/always-use-default-target不能同时配置，前者会让后者失效
+                authentication-success-handler-ref="authenticationSuccessHandler"
+                authentication-failure-handler-ref="authenticationFailureHandler"
+            default-target-url
+                默认登陆成功后页面【根据确认授权之前访问路径确定；若直接访问地址为登录页面，则此页面默认为应用根路径-欢迎页面；否则为需要授权访问的地址】
+        -->
         <security:form-login login-page="/login.jsp"
                              login-processing-url="/index/login.do"
                              username-parameter="username"
                              default-target-url="/success.jsp"
-                             always-use-default-target="true"
-                             authentication-success-handler-ref="authenticationSuccessHandler"
-                             authentication-failure-handler-ref="authenticationFailureHandler"
+                             authentication-failure-url="/failure.jsp"
                              password-parameter="password"/>
 
         <security:logout logout-url="/index/logout.do" logout-success-url="/login.jsp" invalidate-session="true"/>
@@ -40,19 +51,31 @@
             login.jsp放行，实现匿名访问方式一：TODO 此种方式目标 pattern 会进入 filter 进行过滤
             fixme access 需要通过 hasRole / hasPermission 等配置为可匿名访问
         -->
-        <!--<security:intercept-url pattern="/view/login.jsp" access="IS_AUTHENTICATED_ANONYMOUSLY"/>-->
+        <!--<security:intercept-url pattern="/view/login.jsp" access="hasRole('IS_AUTHENTICATED_ANONYMOUSLY')"/>-->
 
-        <!--TODO 4.0+版本中access必须为hasRole('ROLE_**')-->
-        <security:intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
+        <!--TODO 4.0+版本中access必须为hasRole('ROLE_**') & 开启 https 访问-->
+        <security:intercept-url pattern="/**" access="hasRole('ROLE_USER')" requires-channel="https" method="POST"/>
+        <!--http & https 监听端口映射-->
+        <security:port-mappings>
+            <security:port-mapping http="80" https="443"/>
+        </security:port-mappings>
     </security:http>
 
     <!--配置安全数据源 && 实际项目开发中应该存储与数据库中-->
     <security:authentication-manager>
-        <security:authentication-provider>
-            <security:user-service>
+        <!--没有使用 ref 指定引用时，默认创建 DaoAuthenticationProvider；user-service-ref自定义实现-->
+        <security:authentication-provider user-service-ref="jdbcDao">
+            <security:password-encoder hash="md5">
+                <!--密码 salt 使用-->
+                <security:salt-source user-property="username"/>
+            </security:password-encoder>
+            <!--TODO jdbc-user-service 不支持 enableGroups 用户组权限 - 可以使用 org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl-->
+            <security:jdbc-user-service data-source-ref="dataSource" role-prefix="none"/>
+            <!--security:user-service 默认使用 in-memory UserDetailService 实现-->
+            <!--<security:user-service>
                 <security:user name="user" authorities="ROLE_USER" password="user"/>
                 <security:user name="admin" authorities="ROLE_USER,ROLE_ADMIN" password="admin"/>
-            </security:user-service>
+            </security:user-service>-->
         </security:authentication-provider>
     </security:authentication-manager>
 

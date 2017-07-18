@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class IndexController {
 
     @RequestMapping(value = "login")
-    public String login(Model model){
+    public void login(Model model){
         System.out.println("login");
-        return "success";
+        //return "success";
     }
 
     @RequestMapping(value = "logout")

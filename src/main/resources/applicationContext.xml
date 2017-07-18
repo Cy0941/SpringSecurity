@@ -10,6 +10,63 @@
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
+    <!-- 数据库数据源配置 -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+          destroy-method="close">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url"
+                  value="jdbc:mysql://localhost:3306/crmnew?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull"/>
+        <property name="username" value="crmNew"/>
+        <property name="password" value="crmNew_thinkingbar123"/><!--crmNew_thinkingbar123-->
+
+        <property name="logAbandoned" value="true"/>
+        <property name="removeAbandoned" value="true"/>
+        <property name="removeAbandonedTimeout" value="180"/>
+        <property name="initialSize" value="10"/>
+        <property name="maxIdle" value="20"/>
+        <property name="minIdle" value="3"/>
+        <property name="maxWait" value="60000"/>
+        <property name="maxActive" value="20"/>
+        <property name="minEvictableIdleTimeMillis" value="1800000"/>
+        <property name="timeBetweenEvictionRunsMillis" value="1800000"/>
+        <property name="numTestsPerEvictionRun" value="20"/>
+        <property name="testOnBorrow" value="false"/>
+        <property name="testOnReturn" value="false"/>
+        <property name="testWhileIdle" value="true"/>
+    </bean>
+
+    <bean class="org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl" id="jdbcDao">
+        <property name="dataSource" ref="dataSource"/>
+        <!--启用用户组权限支持-->
+        <!--<property name="enableGroups" value="true"/>-->
+    </bean>
+
+    <!--异常信息本地化-->
+    <bean class="org.springframework.context.support.ReloadableResourceBundleMessageSource" id="messageSource">
+        <!--<property name="basename" value="org.springframework.security.messages"/>-->
+        <property name="basenames">
+            <array>
+                <!--cxy 自定义的消息必须放在前面-->
+                <!--<value>message_zh_CN.properies</value>-->
+
+                <value>org.springframework.security.messages</value>
+            </array>
+        </property>
+    </bean>
+
+    <!--配置支持缓存的UserDetailsService-->
+    <bean class="org.springframework.security.config.authentication.CachingUserDetailsService"
+          id="cachingUserDetailsService">
+        <constructor-arg ref="jdbcDao"/>
+        <property name="userCache" ref="userCache"/>
+    </bean>
+
+    <bean class="org.springframework.security.core.userdetails.cache.EhCacheBasedUserCache" id="userCache">
+        <property name="cache" ref="cacheManager"/>
+    </bean>
+
+    <bean class="org.springframework.cache.ehcache.EhCacheFactoryBean" id="cacheManager"/>
+
 
     <import resource="classpath:securityConfig.xml"/>
 

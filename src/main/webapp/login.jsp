@@ -23,7 +23,7 @@
         </tr>
         <tr>
             <td colspan="2" align="center">
-                <input type="text" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <input type="submit" value="登录"/>
                 <input type="reset" value="重置"/>
             </td>
