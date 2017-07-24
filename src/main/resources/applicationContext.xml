@@ -3,8 +3,10 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+                           http://www.springframework.org/schema/data/jpa  http://www.springframework.org/schema/data/jpa/spring-data-jpa.xsd
                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!--使用命名空间配置嵌入式数据库-->
@@ -12,6 +14,8 @@
         &lt;!&ndash;配置数据库脚本文件位置&ndash;&gt;
         <jdbc:script location="crmnew_crm_bill.sql"/>
     </jdbc:embedded-database>-->
+    
+    <jpa:repositories base-package="cn.cxy.spring.config" repository-impl-postfix="Helper"/>
 
     <context:component-scan base-package="cn.cxy.spring">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
