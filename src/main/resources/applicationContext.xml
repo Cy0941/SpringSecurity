@@ -2,19 +2,29 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
        xmlns:jdbc="http://www.springframework.org/schema/jdbc"
        xmlns:jpa="http://www.springframework.org/schema/data/jpa"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
                            http://www.springframework.org/schema/data/jpa  http://www.springframework.org/schema/data/jpa/spring-data-jpa.xsd
+                           http://www.springframework.org/schema/data/mongo  http://www.springframework.org/schema/data/mongo/spring-data-mongo.xsd
                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--启用生成 Repository 功能-->
+    <mongo:repositories base-package="cn.cxy.spring"/>
+
+    <bean class="org.springframework.data.mongodb.core.MongoTemplate" id="template">
+        <constructor-arg ref="mongoDbFactory"/>
+        <constructor-arg value="OrdersDB"/>
+    </bean>
 
     <!--使用命名空间配置嵌入式数据库-->
     <!--<jdbc:embedded-database id="dataSource2" type="DERBY">&lt;!&ndash;type 指定的数据库需要位于应用的类路径下&ndash;&gt;
         &lt;!&ndash;配置数据库脚本文件位置&ndash;&gt;
         <jdbc:script location="crmnew_crm_bill.sql"/>
     </jdbc:embedded-database>-->
-    
+
     <jpa:repositories base-package="cn.cxy.spring.config" repository-impl-postfix="Helper"/>
 
     <context:component-scan base-package="cn.cxy.spring">

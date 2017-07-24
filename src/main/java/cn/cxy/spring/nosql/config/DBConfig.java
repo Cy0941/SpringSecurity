@@ -1,4 +1,4 @@
-package cn.cxy.spring.config;
+package cn.cxy.spring.nosql.config;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.context.annotation.Bean;
