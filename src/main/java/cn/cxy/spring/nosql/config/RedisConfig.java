@@ -19,7 +19,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 public class RedisConfig {
 
     @Bean
-    public RedisConnectionFactory factory(){
+    public RedisConnectionFactory factory() {
         JedisConnectionFactory factory = new JedisConnectionFactory();
         factory.setHostName("redis-server");
         factory.setPort(6379);
@@ -29,9 +29,9 @@ public class RedisConfig {
     }
 
     @Bean
-    public RedisTemplate redisTemplate(){
+    public RedisTemplate redisTemplate(RedisConnectionFactory factory) {
         RedisTemplate template = new RedisTemplate();
-        template.setConnectionFactory(factory());
+        template.setConnectionFactory(factory);
         //TODO other configs & StringRedisTemplate 配置同
         template.setEnableTransactionSupport(true);
         return template;

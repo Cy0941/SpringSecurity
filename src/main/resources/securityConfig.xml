@@ -6,15 +6,13 @@
                            http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
 
+    <!--login.jsp放行，实现匿名访问方式二：TODO 此种方式对应的 pattern 不会生成过滤器链-->
     <security:http pattern="/login.jsp" security="none"/>
-
     <security:http auto-config="true">
-
+        <!--记住管理器-->
         <security:remember-me key="cxy" user-service-ref="cachingUserDetailsService"/>
-
         <!--匿名认证-->
         <security:anonymous enabled="true" username="anonymousUser" key="doseNotMatter" granted-authority="IS_AUTHENTICATED_ANONYMOUSLY"/>
-
         <!--
             当指定 auto-config=true 时，等价于配置
                 <security:http>
@@ -31,8 +29,8 @@
 
         <!--
             authentication-success-handler-ref 与 default-target-url/always-use-default-target不能同时配置，前者会让后者失效
-                authentication-success-handler-ref="authenticationSuccessHandler"
-                authentication-failure-handler-ref="authenticationFailureHandler"
+            authentication-success-handler-ref="authenticationSuccessHandler"
+            authentication-failure-handler-ref="authenticationFailureHandler"
             default-target-url
                 默认登陆成功后页面【根据确认授权之前访问路径确定；若直接访问地址为登录页面，则此页面默认为应用根路径-欢迎页面；否则为需要授权访问的地址】
         -->
@@ -42,11 +40,9 @@
                              default-target-url="/success.jsp"
                              authentication-failure-url="/failure.jsp"
                              password-parameter="password"/>
-
         <security:logout logout-url="/index/logout.do" logout-success-url="/login.jsp" invalidate-session="true"/>
-
+        <!--csrf 默认启用，不建议禁用-->
         <security:csrf disabled="true"/>
-
         <!--
             login.jsp放行，实现匿名访问方式一：TODO 此种方式目标 pattern 会进入 filter 进行过滤
             fixme access 需要通过 hasRole / hasPermission 等配置为可匿名访问

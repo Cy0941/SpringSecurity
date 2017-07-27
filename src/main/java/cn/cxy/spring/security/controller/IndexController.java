@@ -1,5 +1,7 @@
 package cn.cxy.spring.security.controller;
 
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,10 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller(value = "/index/")
 public class IndexController {
 
+    @PreAuthorize("hasPermission(null ,null ,null )")
+    @PostFilter("hasPermission(null,null,null)")
     @RequestMapping(value = "login")
-    public void login(Model model){
+    public void login(){
         System.out.println("login");
-        //return "success";
     }
 
     @RequestMapping(value = "logout")

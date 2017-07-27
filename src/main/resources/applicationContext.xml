@@ -4,12 +4,23 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mongo="http://www.springframework.org/schema/data/mongo"
        xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:jpa="http://www.springframework.org/schema/data/jpa"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+                           http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+                           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
                            http://www.springframework.org/schema/data/jpa  http://www.springframework.org/schema/data/jpa/spring-data-jpa.xsd
                            http://www.springframework.org/schema/data/mongo  http://www.springframework.org/schema/data/mongo/spring-data-mongo.xsd
                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <cache:advice id="cacheAdvice" cache-manager="mapCache">
+        <cache:caching>
+            <cache:cacheable cache="spittleCache" method="findRecent"/>
+        </cache:caching>
+    </cache:advice>
+
 
     <!--启用生成 Repository 功能-->
     <mongo:repositories base-package="cn.cxy.spring"/>
@@ -56,12 +67,6 @@
         <property name="testWhileIdle" value="true"/>
     </bean>
 
-    <bean class="org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl" id="jdbcDao">
-        <property name="dataSource" ref="dataSource"/>
-        <!--启用用户组权限支持-->
-        <!--<property name="enableGroups" value="true"/>-->
-    </bean>
-
     <!--异常信息本地化-->
     <bean class="org.springframework.context.support.ReloadableResourceBundleMessageSource" id="messageSource">
         <!--<property name="basename" value="org.springframework.security.messages"/>-->
@@ -80,11 +85,19 @@
         <property name="userCache" ref="userCache"/>
     </bean>
 
-    <bean class="org.springframework.security.core.userdetails.cache.EhCacheBasedUserCache" id="userCache">
-        <property name="cache" ref="cacheManager"/>
+    <bean class="org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl" id="jdbcDao">
+        <property name="dataSource" ref="dataSource"/>
+        <!--启用用户组权限支持-->
+        <!--<property name="enableGroups" value="true"/>-->
     </bean>
 
-    <bean class="org.springframework.cache.ehcache.EhCacheFactoryBean" id="cacheManager"/>
+    <bean class="org.springframework.security.core.userdetails.cache.EhCacheBasedUserCache" id="userCache">
+        <property name="cache" ref="ehCacheManager"/>
+    </bean>
+
+    <bean class="org.springframework.cache.ehcache.EhCacheFactoryBean" id="ehCacheManager"/>
+
+    <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheManager" id="mapCache"/>
 
     <!--SpringSecurity配置-->
     <import resource="classpath:securityConfig.xml"/>
