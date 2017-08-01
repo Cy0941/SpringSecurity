@@ -17,11 +17,17 @@ import org.springframework.remoting.rmi.RmiProxyFactoryBean;
 @Configuration
 public class ClientConfig {
 
+    /**
+     * 通过代理对象获取代理接口并转化为本地接口
+     * fixme 待测试
+     * @return
+     */
     @Bean
     public ServerService myService(){
         RmiProxyFactoryBean factoryBean = new RmiProxyFactoryBean();
         factoryBean.setServiceUrl("rmi://localhost/ServerService");
         factoryBean.setServiceInterface(ServerService.class);
+        //fixme
         return (ServerService) factoryBean.getObject();
     }
 
