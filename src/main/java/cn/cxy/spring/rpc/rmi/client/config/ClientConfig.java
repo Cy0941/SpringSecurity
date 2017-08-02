@@ -1,6 +1,6 @@
 package cn.cxy.spring.rpc.rmi.client.config;
 
-import cn.cxy.spring.rpc.rmi.client.service.ServerService;
+import cn.cxy.spring.rpc.service.client.service.ServerService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.remoting.rmi.RmiProxyFactoryBean;

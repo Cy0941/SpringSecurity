@@ -1,6 +1,6 @@
 package cn.cxy.spring.rpc.rmi.server.config;
 
-import cn.cxy.spring.rpc.rmi.server.config.service.ServerService;
+import cn.cxy.spring.rpc.service.server.ServerService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.remoting.rmi.RmiServiceExporter;

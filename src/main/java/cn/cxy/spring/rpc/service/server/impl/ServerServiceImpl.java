@@ -1,6 +1,6 @@
-package cn.cxy.spring.rpc.rmi.server.config.service.impl;
+package cn.cxy.spring.rpc.service.server.impl;
 
-import cn.cxy.spring.rpc.rmi.server.config.service.ServerService;
+import cn.cxy.spring.rpc.service.server.ServerService;
 import cn.cxy.spring.security.model.Spitter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

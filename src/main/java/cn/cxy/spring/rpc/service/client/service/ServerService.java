@@ -1,4 +1,4 @@
-package cn.cxy.spring.rpc.rmi.server.config.service;
+package cn.cxy.spring.rpc.service.client.service;
 
 import cn.cxy.spring.security.model.Spitter;
 
@@ -10,6 +10,7 @@ import cn.cxy.spring.security.model.Spitter;
  * @author: cx.yang
  * @since: Thinkingbar Web Project 1.0
  */
+
 public interface ServerService {
 
     Spitter findOne(long id);

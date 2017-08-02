@@ -1,8 +1,7 @@
 package cn.cxy.spring.rpc.rmi.client.test;
 
-import cn.cxy.spring.rpc.rmi.client.service.ServerService;
+import cn.cxy.spring.rpc.service.client.service.ServerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.remoting.rmi.RmiProxyFactoryBean;
 import org.springframework.stereotype.Service;
 
 /**

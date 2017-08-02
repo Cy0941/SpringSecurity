@@ -1,7 +1,7 @@
 package cn.cxy.spring.rpc.rmi.client.service.impl;
 
 import cn.cxy.spring.rpc.rmi.client.service.ClientService;
-import cn.cxy.spring.rpc.rmi.client.service.ServerService;
+import cn.cxy.spring.rpc.service.client.service.ServerService;
 import cn.cxy.spring.security.model.Spitter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

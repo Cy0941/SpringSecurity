@@ -1,7 +1,6 @@
-package cn.cxy.spring.rpc.rmi.client.service;
+package cn.cxy.spring.rpc.service.server;
 
 import cn.cxy.spring.security.model.Spitter;
-import org.springframework.stereotype.Repository;
 
 /**
  * Function: TODO
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Repository;
  * @author: cx.yang
  * @since: Thinkingbar Web Project 1.0
  */
-
 public interface ServerService {
 
     Spitter findOne(long id);
